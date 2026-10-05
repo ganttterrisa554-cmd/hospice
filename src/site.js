@@ -1,0 +1,18 @@
+const configuredUrl = process.env.SITE_URL?.trim()
+
+export const siteUrl = configuredUrl ? new URL(configuredUrl) : null
+
+if (siteUrl && (siteUrl.protocol !== 'https:' || siteUrl.username || siteUrl.password || siteUrl.pathname !== '/' || siteUrl.search || siteUrl.hash)) {
+  throw new Error('SITE_URL must be an HTTPS origin without credentials, a path, query, or fragment.')
+}
+
+export const isIndexable = Boolean(
+  siteUrl &&
+  process.env.SITE_INDEXABLE === 'true' &&
+  process.env.NODE_ENV === 'production' &&
+  (!process.env.VERCEL_ENV || process.env.VERCEL_ENV === 'production')
+)
+
+export const siteName = 'Apex Care Partners'
+export const siteTitle = 'Healthcare Careers | Apex Care Partners'
+export const siteDescription = 'Explore patient intake, data entry, and care coordination in this healthcare careers concept. Preview the role and four-step sample application.'
