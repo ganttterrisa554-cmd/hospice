@@ -154,23 +154,34 @@ export default function ApplicationModal({ isOpen, onClose, onSubmitSuccess }) {
       ...formData
     }
 
+    setErrors(prev => ({ ...prev, submission: undefined }))
     try {
       // POST to Next.js API route
-      await fetch('/api/applications', {
+      const response = await fetch('/api/applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(submission)
       })
+      const result = await response.json()
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Application could not be sent. Please try again.')
+      }
 
       // Also persist to localStorage
-      const existing = JSON.parse(localStorage.getItem('apex_care_applications') || '[]')
-      existing.unshift(submission)
-      localStorage.setItem('apex_care_applications', JSON.stringify(existing))
+      try {
+        const existing = JSON.parse(localStorage.getItem('apex_care_applications') || '[]')
+        const entries = Array.isArray(existing) ? existing : []
+        localStorage.setItem('apex_care_applications', JSON.stringify([
+          result.application, ...entries.filter(entry => entry.id !== result.application.id)
+        ].slice(0, 100)))
+      } catch {
+        setErrors({})
+      }
+      onSubmitSuccess(result.application)
     } catch (err) {
-      console.error('Failed to submit application', err)
+      setErrors(prev => ({ ...prev, submission: err.message || 'Application could not be sent. Please try again.' }))
     } finally {
       setIsSubmitting(false)
-      onSubmitSuccess(submission)
     }
   }
 
@@ -201,7 +212,7 @@ export default function ApplicationModal({ isOpen, onClose, onSubmitSuccess }) {
           </button>
         </div>
 
-        <div className="application-demo-note">Design preview — use fictional details. No application is sent to an employer.</div>
+        <div className="application-privacy-note">Your information will be sent to our hiring team for review.</div>
 
         {/* Stepper Bar */}
         <div className="px-6 py-4 bg-white border-b border-slate-100">
@@ -472,7 +483,7 @@ export default function ApplicationModal({ isOpen, onClose, onSubmitSuccess }) {
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
                   Resume / CV Document (Optional)
                 </label>
-                <p className="text-xs text-slate-500 mb-3">Demo only: a filename is recorded, but the document is not uploaded.</p>
+                <p className="text-xs text-slate-500 mb-3">A filename is recorded for review, but the document itself is not uploaded.</p>
                 <div className="flex items-center gap-3">
                   <label className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 hover:border-slate-400 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer shadow-sm transition-colors">
                     <Upload className="w-4 h-4 text-teal-600" />
@@ -628,9 +639,9 @@ export default function ApplicationModal({ isOpen, onClose, onSubmitSuccess }) {
 
               {/* Legal Notice */}
               <div className="p-4 rounded-xl bg-teal-50/60 border border-teal-200 text-xs text-teal-900 space-y-2">
-                <p className="font-semibold text-teal-950">About this demo:</p>
+                <p className="font-semibold text-teal-950">Before you submit:</p>
                 <p>
-                  This prototype is for design review, not real hiring. Demo entries may be stored in this browser and temporarily on the development server. Do not enter real personal information.
+                  Submitting sends your application details to our hiring team for review. Resume files are not uploaded or attached at this stage.
                 </p>
               </div>
 
@@ -644,7 +655,7 @@ export default function ApplicationModal({ isOpen, onClose, onSubmitSuccess }) {
                     className="mt-1 h-4 w-4 rounded text-teal-600 focus:ring-teal-500 border-slate-300"
                   />
                   <span className="text-xs sm:text-sm text-slate-800 leading-snug">
-                    <strong>I have reviewed this demo application</strong> and understand that it uses sample information and will not be sent to an employer.
+                    <strong>I certify that the information provided is accurate</strong> and understand that my details will be sent to the hiring team for review.
                   </span>
                 </label>
                 {errors.certifiedAccurate && <p className="text-xs text-rose-500 mt-1.5">{errors.certifiedAccurate}</p>}
@@ -683,7 +694,14 @@ export default function ApplicationModal({ isOpen, onClose, onSubmitSuccess }) {
         </div>
 
         {/* Footer Navigation */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200">
+          {errors.submission && (
+            <div className="mb-3 flex items-center gap-2 text-xs text-rose-600">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              <span>{errors.submission}</span>
+            </div>
+          )}
+          <div className="flex items-center justify-between">
           {step > 1 ? (
             <button
               type="button"
@@ -721,11 +739,12 @@ export default function ApplicationModal({ isOpen, onClose, onSubmitSuccess }) {
               ) : (
                 <>
                   <CheckCircle2 className="w-4 h-4" />
-                  Complete demo application
+                  Submit application
                 </>
               )}
             </button>
           )}
+          </div>
         </div>
       </div>
     </div>

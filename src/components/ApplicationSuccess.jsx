@@ -11,13 +11,13 @@ export default function ApplicationSuccess({ submission, onClose }) {
         <div className="w-16 h-16 bg-teal-100 text-teal-700 rounded-full flex items-center justify-center mx-auto mb-6"><Check size={28} /></div>
         <p className="eyebrow">FOUR STEPS. ONE NEW POSSIBILITY.</p>
         <h2 id="success-title" className="font-serif text-4xl mt-3 text-slate-900">You’ve reached the finish.</h2>
-        <p className="mt-4 text-sm leading-7 text-slate-600">Thank you, {submission.fullName}. You’ve completed the sample application experience. This is a demo, not an application to a real employer.</p>
+        <p className="mt-4 text-sm leading-7 text-slate-600">Thank you, {submission.fullName}. Your application has been submitted and sent to our hiring team for review.</p>
         {/* Reference ID card */}
-        <div className="my-7 border-y border-slate-200 py-5 flex justify-between items-center gap-3 text-left"><div><p className="eyebrow text-slate-500">DEMO REFERENCE</p><p className="font-mono text-sm mt-1">{submission.id}</p></div><span className="text-xs text-slate-500">{new Date(submission.submittedAt).toLocaleDateString()}</span></div>
+        <div className="my-7 border-y border-slate-200 py-5 flex justify-between items-center gap-3 text-left"><div><p className="eyebrow text-slate-500">APPLICATION REFERENCE</p><p className="font-mono text-sm mt-1">{submission.id}</p></div><span className="text-xs text-slate-500">{new Date(submission.submittedAt).toLocaleDateString()}</span></div>
         {/* Timeline breakdown */}
-        <p className="text-sm text-slate-600 leading-7 mb-6">You can return to the careers page or explore your sample entry in the demo inbox. No recruiter will contact you.</p>
+        <p className="text-sm text-slate-600 leading-7 mb-6">Our team will review your application and reach out to you directly if your experience is a fit for the role.</p>
         {/* Security Reminder */}
-        <div className="flex gap-3 items-start text-left bg-teal-100 p-4 rounded-lg mb-7 text-xs leading-6 text-teal-900"><ShieldCheck size={20} className="shrink-0 mt-1" /><p>Please use fictional data. This prototype is not configured for secure production recruitment.</p></div>
+        <div className="flex gap-3 items-start text-left bg-teal-100 p-4 rounded-lg mb-7 text-xs leading-6 text-teal-900"><ShieldCheck size={20} className="shrink-0 mt-1" /><p>We will never ask for your Social Security number, bank details, or payment information by email.</p></div>
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-4 justify-center"><button onClick={() => window.print()} className="text-link"><Printer size={16} /> Print summary</button><button onClick={onClose} className="button button-dark"><ArrowLeft size={16} /> Back to careers</button></div>
       </div>

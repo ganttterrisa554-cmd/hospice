@@ -15,4 +15,4 @@ export const isIndexable = Boolean(
 
 export const siteName = 'Apex Care Partners'
 export const siteTitle = 'Healthcare Careers | Apex Care Partners'
-export const siteDescription = 'Explore patient intake, data entry, and care coordination in this healthcare careers concept. Preview the role and four-step sample application.'
+export const siteDescription = 'Join Apex Care Partners as a remote Patient Intake & Data Entry Specialist. Explore the role and apply in four simple steps.'

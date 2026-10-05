@@ -5,7 +5,6 @@ import { ArrowUpRight, Flower2, FolderOpen } from 'lucide-react'
 export default function Navbar({ onOpenApplication, onViewSubmissions, submissionCount }) {
   return (
     <header className="site-header">
-      <div className="preview-banner">Careers website concept <span>·</span> Demo only — please use sample information</div>
       <div className="site-container nav-inner">
         <a className="brand" href="#home" aria-label="Apex careers home">
           <Flower2 size={37} strokeWidth={1.4} />
@@ -17,8 +16,8 @@ export default function Navbar({ onOpenApplication, onViewSubmissions, submissio
           <a href="#faq">Good to know</a>
         </nav>
         <div className="nav-actions">
-          <button className="dashboard-button" onClick={onViewSubmissions} aria-label={`View ${submissionCount} demo applications`}>
-            <FolderOpen size={18} /><span>Demo inbox</span><span className="inbox-count">{submissionCount}</span>
+          <button className="dashboard-button" onClick={onViewSubmissions} aria-label={`View ${submissionCount} submitted applications`}>
+            <FolderOpen size={18} /><span>Applications</span><span className="inbox-count">{submissionCount}</span>
           </button>
           <button className="button button-dark nav-apply" onClick={onOpenApplication}>Apply now <ArrowUpRight size={17} /></button>
         </div>

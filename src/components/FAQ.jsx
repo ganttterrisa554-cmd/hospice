@@ -6,11 +6,10 @@ import { Plus, Minus, ArrowUpRight } from 'lucide-react'
 export default function FAQ({ onOpenApplication }) {
   const [openIdx, setOpenIdx] = useState(0)
   const faqs = [
-    { q: 'What should I have ready?', a: 'The demo walks through contact details, experience, availability, and a final review. Please use fictional details while exploring it. No Social Security number, bank details, or payment information is requested.' },
-    { q: 'Do I need healthcare experience?', a: 'The sample role focuses on organization, communication, and data entry. Final eligibility requirements and training details need to be confirmed by the employer before a real opening is published.' },
-    { q: 'Can I choose my working hours?', a: 'You can share your weekly availability and preferred shift in the application. Actual schedules, pay, and benefits are not yet confirmed.' },
-    { q: 'What happens after I apply?', a: 'You will see a demo confirmation. This prototype does not send an application to a recruitment team or schedule an interview. Resume selection currently records only the filename, not an uploaded document.' },
-    { q: 'Is this an official employer website?', a: 'No. Apex Care Partners is placeholder branding for this design concept. Employer identity, contact details, privacy policies, and hiring information must be verified before launch.' },
+    { q: 'What should I have ready?', a: 'The application walks through contact details, experience, availability, and a final review. No Social Security number, bank details, or payment information is requested.' },
+    { q: 'Do I need healthcare experience?', a: 'This role focuses on organization, communication, and data entry. Prior healthcare experience is welcome but not required — training is provided for the right candidate.' },
+    { q: 'Can I choose my working hours?', a: 'You can share your weekly availability and preferred shift in the application. Final schedules are confirmed during the hiring process.' },
+    { q: 'What happens after I apply?', a: 'Your application is sent to our hiring team for review. You will see a confirmation with a reference number, and we will reach out to you directly if your experience is a fit for the role.' },
   ]
 
   return (

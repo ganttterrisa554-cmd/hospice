@@ -110,7 +110,7 @@ export default function AdminDrawer({ isOpen, onClose, applications, onClearAll 
             <div className="text-center py-16 text-slate-400">
               <Clock className="w-10 h-10 mx-auto mb-2 stroke-1" />
               <p className="text-sm font-medium">No application records found.</p>
-              <p className="text-xs text-slate-400 mt-1">Submit an application from the landing page to test this view.</p>
+              <p className="text-xs text-slate-400 mt-1">Submitted applications will appear here.</p>
             </div>
           ) : (
             filtered.map((app) => (
