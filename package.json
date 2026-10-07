@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "campaign": "node --env-file=.env.local scripts/send-campaign.mjs",
+    "outreach": "node --env-file=.env.local scripts/send-outreach.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.52.0",

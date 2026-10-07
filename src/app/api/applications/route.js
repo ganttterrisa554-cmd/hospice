@@ -1,4 +1,6 @@
 import { createHash } from 'node:crypto'
+import { brand } from '../../../lib/brand.mjs'
+import { render, sendMail } from '../../../lib/mail.mjs'
 
 export const runtime = 'nodejs'
 
@@ -80,6 +82,21 @@ export async function POST(request) {
       return Response.json({ success: false, error: 'Email delivery was not accepted. Please try again.' }, { status: 502 })
     }
     applications = [id, ...applications.filter(item => item !== id)].slice(0, 100)
+    try {
+      // Best-effort applicant confirmation — the notification email above already
+      // confirmed delivery, so a failure here must not fail the application.
+      const confirmation = render('application-confirmation', { fullName: details.fullName, reference: id })
+      await sendMail({
+        to: details.email,
+        subject: confirmation.subject,
+        text: confirmation.text,
+        html: confirmation.html,
+        replyTo: brand.hiringInbox,
+        idempotencyKey: `${id}-confirm`
+      })
+    } catch {
+      // Swallow — never let a confirmation failure fail the application response.
+    }
     return Response.json({ success: true, application: record })
   } catch {
     return Response.json({ success: false, error: 'Unable to confirm email delivery. Please retry with the same details.' }, { status: 502 })

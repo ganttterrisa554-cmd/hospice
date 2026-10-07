@@ -6,7 +6,7 @@ import { Plus, Minus, ArrowUpRight } from 'lucide-react'
 export default function FAQ({ onOpenApplication }) {
   const [openIdx, setOpenIdx] = useState(0)
   const faqs = [
-    { q: 'What should I have ready?', a: 'The application walks through contact details, experience, availability, and a final review. No Social Security number, bank details, or payment information is requested.' },
+    { q: 'What should I have ready?', a: 'The application walks through contact details, experience, availability, and a final review.' },
     { q: 'Do I need healthcare experience?', a: 'This role focuses on organization, communication, and data entry. Prior healthcare experience is welcome but not required — training is provided for the right candidate.' },
     { q: 'Can I choose my working hours?', a: 'You can share your weekly availability and preferred shift in the application. Final schedules are confirmed during the hiring process.' },
     { q: 'What happens after I apply?', a: 'Your application is sent to our hiring team for review. You will see a confirmation with a reference number, and we will reach out to you directly if your experience is a fit for the role.' },

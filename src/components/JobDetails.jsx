@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowUpRight, Check, ShieldCheck } from 'lucide-react'
+import { ArrowUpRight, Check } from 'lucide-react'
 
 export default function JobDetails({ onOpenApplication }) {
   const responsibilities = ['Keep patient intake records accurate and organized.', 'Help coordinate schedules and referral documentation.', 'Communicate thoughtfully with care and administrative teams.', 'Handle information carefully and flag missing details.']
@@ -27,8 +27,6 @@ export default function JobDetails({ onOpenApplication }) {
           </div>
           <div className="role-card-footer"><p>Sound like your kind of work?<small>Explore the four-step application.</small></p><button className="button button-dark" onClick={onOpenApplication}>Get started <ArrowUpRight size={18} /></button></div>
         </article>
-        {/* Security & Hiring Transparency Banner */}
-        <div className="role-security"><ShieldCheck size={21} /><p>No SSN, bank, or payment-card details in this application.</p></div>
       </div>
     </section>
   )
