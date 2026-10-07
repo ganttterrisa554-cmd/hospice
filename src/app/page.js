@@ -18,7 +18,7 @@ export default function Home() {
   // Load submissions from localStorage or API on mount
   useEffect(() => {
     try {
-      const stored = localStorage.getItem('apex_care_applications')
+      const stored = localStorage.getItem('canyon_care_applications')
       if (stored) {
         setSubmissions(JSON.parse(stored))
       }
@@ -33,7 +33,7 @@ export default function Home() {
 
   const handleClearAll = () => {
     if (window.confirm('Are you sure you want to clear all stored submissions?')) {
-      localStorage.removeItem('apex_care_applications')
+      localStorage.removeItem('canyon_care_applications')
       setSubmissions([])
     }
   }

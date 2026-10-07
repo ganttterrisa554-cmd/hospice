@@ -16,7 +16,7 @@ export const metadata = {
   metadataBase: siteUrl || new URL("http://localhost:3000"),
   title: { default: siteTitle, template: `%s | ${siteName}` },
   description: siteDescription,
-  applicationName: "Apex Careers",
+  applicationName: "Canyon Careers",
   ...(siteUrl ? { alternates: { canonical: siteUrl.href } } : {}),
   robots: { index: isIndexable, follow: isIndexable },
   openGraph: {

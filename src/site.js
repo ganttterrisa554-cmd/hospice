@@ -13,6 +13,6 @@ export const isIndexable = Boolean(
   (!process.env.VERCEL_ENV || process.env.VERCEL_ENV === 'production')
 )
 
-export const siteName = 'Apex Care Partners'
-export const siteTitle = 'Healthcare Careers | Apex Care Partners'
-export const siteDescription = 'Join Apex Care Partners as a remote Patient Intake & Data Entry Specialist. Explore the role and apply in four simple steps.'
+export const siteName = 'Canyon HomeCare & Hospice'
+export const siteTitle = 'Healthcare Careers | Canyon HomeCare & Hospice'
+export const siteDescription = 'Join Canyon HomeCare & Hospice as a remote Patient Intake & Data Entry Specialist. Explore the role and apply in four simple steps.'

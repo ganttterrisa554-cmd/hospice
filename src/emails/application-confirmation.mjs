@@ -6,7 +6,7 @@ function greetingName(fullName) {
 }
 
 export function subject() {
-  return 'We received your application — Apex Care Partners'
+  return 'We received your application — Canyon HomeCare & Hospice'
 }
 
 export function preheader({ reference } = {}) {
@@ -16,7 +16,7 @@ export function preheader({ reference } = {}) {
 export function text({ fullName, reference, roleTitle = defaultRole } = {}) {
   return `Hi ${greetingName(fullName)},
 
-Thank you for applying for the ${roleTitle} role with Apex Care Partners. Your application came through and is now in our review queue.
+Thank you for applying for the ${roleTitle} role with Canyon HomeCare & Hospice. Your application came through and is now in our review queue.
 
 Here's what happens next:
 - Our hiring team reviews your application and availability details.
@@ -27,5 +27,5 @@ Your reference number is ${reference}. Keep it handy if you contact us about thi
 
 Thanks again for your interest in joining our team.
 
-The Apex Care Partners hiring team`
+The Canyon HomeCare & Hospice hiring team`
 }

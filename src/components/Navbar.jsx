@@ -6,9 +6,9 @@ export default function Navbar({ onOpenApplication, onViewSubmissions, submissio
   return (
     <header className="site-header">
       <div className="site-container nav-inner">
-        <a className="brand" href="#home" aria-label="Apex careers home">
+        <a className="brand" href="#home" aria-label="Canyon HomeCare &amp; Hospice careers home">
           <Flower2 size={37} strokeWidth={1.4} />
-          <span>apex<span className="brand-subtitle">CARE PARTNERS</span></span>
+          <span>canyon<span className="brand-subtitle">HOMECARE &amp; HOSPICE</span></span>
         </a>
         <nav className="desktop-nav" aria-label="Main navigation">
           <a href="#about">Our approach</a>

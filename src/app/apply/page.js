@@ -135,9 +135,9 @@ export default function ApplyPage() {
       }
 
       try {
-        const existing = JSON.parse(localStorage.getItem('apex_care_applications') || '[]')
+        const existing = JSON.parse(localStorage.getItem('canyon_care_applications') || '[]')
         const entries = Array.isArray(existing) ? existing : []
-        localStorage.setItem('apex_care_applications', JSON.stringify([
+        localStorage.setItem('canyon_care_applications', JSON.stringify([
           result.application, ...entries.filter(entry => entry.id !== result.application.id)
         ].slice(0, 100)))
       } catch {
@@ -164,9 +164,9 @@ export default function ApplyPage() {
       <div className="careers-site">
         <header className="site-header">
           <div className="site-container nav-inner">
-            <Link className="brand" href="/" aria-label="Apex careers home">
+            <Link className="brand" href="/" aria-label="Canyon careers home">
               <Flower2 size={37} strokeWidth={1.4} />
-              <span>apex<span className="brand-subtitle">CARE PARTNERS</span></span>
+              <span>canyon<span className="brand-subtitle">HOMECARE &amp; HOSPICE</span></span>
             </Link>
             <Link href="/" className="text-link"><X size={16} /> Back to careers</Link>
           </div>
@@ -198,9 +198,9 @@ export default function ApplyPage() {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="site-header">
         <div className="site-container nav-inner">
-          <Link className="brand" href="/" aria-label="Apex careers home">
+          <Link className="brand" href="/" aria-label="Canyon careers home">
             <Flower2 size={37} strokeWidth={1.4} />
-            <span>apex<span className="brand-subtitle">CARE PARTNERS</span></span>
+            <span>canyon<span className="brand-subtitle">HOMECARE &amp; HOSPICE</span></span>
           </Link>
           <Link href="/" className="text-link"><X size={16} /> Back to careers</Link>
         </div>

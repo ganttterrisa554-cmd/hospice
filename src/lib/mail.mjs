@@ -90,8 +90,8 @@ export function emailShell({ preheader = '', bodyHtml = '' }) {
 <tr><td align="center" style="padding:28px 16px;">
 <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
 <tr><td style="padding:0 0 14px;">
-  <span style="font-family:Arial,Helvetica,sans-serif;font-size:26px;font-weight:700;line-height:1;letter-spacing:-1px;color:#233e32;">apex</span><br>
-  <span style="font-family:Arial,Helvetica,sans-serif;font-size:9px;font-weight:600;line-height:1;letter-spacing:2.5px;color:#657064;">CARE PARTNERS</span>
+  <span style="font-family:Arial,Helvetica,sans-serif;font-size:26px;font-weight:700;line-height:1;letter-spacing:-1px;color:#233e32;">canyon</span><br>
+  <span style="font-family:Arial,Helvetica,sans-serif;font-size:8px;font-weight:600;line-height:1;letter-spacing:2px;color:#657064;">HOMECARE &amp; HOSPICE</span>
 </td></tr>
 <tr><td style="height:3px;line-height:3px;font-size:0;background-color:${brand.accent};">&nbsp;</td></tr>
 <tr><td style="padding:26px 0 8px;">

@@ -39,7 +39,7 @@ export default function AdminDrawer({ isOpen, onClose, applications, onClearAll 
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `apex_care_applications_${new Date().toISOString().split('T')[0]}.csv`)
+    link.setAttribute('download', `canyon_care_applications_${new Date().toISOString().split('T')[0]}.csv`)
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)

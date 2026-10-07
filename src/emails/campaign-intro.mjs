@@ -1,7 +1,7 @@
 import { brand } from '../lib/brand.mjs'
 
 export function subject() {
-  return 'Remote Patient Intake & Data Entry role — Apex Care Partners'
+  return 'Remote Patient Intake & Data Entry role — Canyon HomeCare & Hospice'
 }
 
 export function preheader() {
@@ -11,7 +11,7 @@ export function preheader() {
 export function text({ firstName = 'there' } = {}) {
   return `Hi ${firstName},
 
-I'm reaching out from Apex Care Partners — we're hiring a remote Patient Intake & Data Entry Specialist, and I thought it might be a good fit for you.
+I'm reaching out from Canyon HomeCare & Hospice — we're hiring a remote Patient Intake & Data Entry Specialist, and I thought it might be a good fit for you.
 
 It's a fully remote role: you'd help new patients get set up with our care team, enter and verify intake details, and keep records accurate. We offer flexible weekly hours, provided training, and a schedule built for quiet home work.
 
@@ -21,5 +21,5 @@ ${brand.siteUrl}/apply
 No pressure either way — if the timing isn't right, feel free to pass it along to someone who'd be a great fit.
 
 All the best,
-The Apex Care Partners hiring team`
+The Canyon HomeCare & Hospice hiring team`
 }

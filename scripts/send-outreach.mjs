@@ -75,11 +75,11 @@ async function main() {
     }
     const body = render('recruiting-outreach', { firstName: r.firstName, callbackNumber: brand.hiringPhone })
     try {
+      // Plain text only — the branded HTML shell lands cold outreach in Promotions.
       const result = await sendMail({
         to: r.email,
         subject: body.subject,
         text: body.text,
-        html: body.html,
         replyTo: brand.hiringInbox,
         idempotencyKey: `outreach-${createHash('sha256').update(r.email).digest('hex').slice(0, 16)}`,
       })

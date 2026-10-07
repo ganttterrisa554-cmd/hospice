@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-export const alt = 'Apex Care Partners careers — Good work. Real purpose. From home.'
+export const alt = 'Canyon HomeCare & Hospice careers — Good work. Real purpose. From home.'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -79,8 +79,8 @@ export default function OpenGraphImage() {
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: 38, fontWeight: 700, letterSpacing: -1, lineHeight: 1 }}>apex</span>
-            <span style={{ fontSize: 13, letterSpacing: 5, color: '#516d57', marginTop: 4 }}>CARE PARTNERS</span>
+            <span style={{ fontSize: 38, fontWeight: 700, letterSpacing: -1, lineHeight: 1 }}>canyon</span>
+            <span style={{ fontSize: 11, letterSpacing: 4, color: '#516d57', marginTop: 4 }}>HOMECARE &amp; HOSPICE</span>
           </div>
         </div>
 
