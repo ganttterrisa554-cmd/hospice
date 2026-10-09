@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { X, Trash2, Download, Search, UserCheck, Clock, Mail, Phone, MapPin } from 'lucide-react'
+import { X, Trash2, Download, Search, UserCheck, Clock, Mail, Phone, MapPin, Send } from 'lucide-react'
 
 export default function AdminDrawer({ isOpen, onClose, applications, onClearAll }) {
   const [searchTerm, setSearchTerm] = useState('')
@@ -61,6 +61,14 @@ export default function AdminDrawer({ isOpen, onClose, applications, onClearAll 
             </p>
           </div>
           <div className="flex items-center gap-2">
+            <a
+              href="/admin"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-teal-600 text-white hover:bg-teal-700 transition-colors"
+              title="Open email blaster"
+            >
+              <Send className="w-3.5 h-3.5" />
+              Blaster
+            </a>
             {applications.length > 0 && (
               <>
                 <button

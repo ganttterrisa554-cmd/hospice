@@ -28,6 +28,9 @@
 scripts/.campaign-log.json
 scripts/.outreach-log.json
 
+# blaster data (templates, campaigns, recipient log)
+data/blaster/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

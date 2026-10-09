@@ -33,7 +33,7 @@ async function main() {
     process.exit(1)
   }
 
-  if (!dryRun && !/\d{7,}/.test(brand.hiringPhone)) {
+  if (!dryRun && (brand.hiringPhone || '').replace(/\D/g, '').length < 7) {
     console.error('Set hiringPhone in src/lib/brand.mjs before sending — it goes in the email.')
     process.exit(1)
   }

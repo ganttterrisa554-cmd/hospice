@@ -40,6 +40,26 @@ export function escapeHtml(value) {
 const pStyle = 'margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#233e32;'
 const ulStyle = 'margin:0 0 16px;padding-left:22px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#233e32;'
 const liStyle = 'margin:0 0 4px;'
+const aStyle = 'color:#254b39;text-decoration:underline;'
+
+const LINK_RE = /\[([^\]]{1,200})\]\((https?:\/\/[^\s)]{1,2000})\)|(https?:\/\/[^\s<>"')]{1,2000})/g
+
+// Escapes a text line while turning [text](url) and bare https:// URLs into <a>.
+function linkify(line) {
+  let html = ''
+  let last = 0
+  let m
+  LINK_RE.lastIndex = 0
+  while ((m = LINK_RE.exec(line))) {
+    html += escapeHtml(line.slice(last, m.index))
+    const url = m[2] || m[3].replace(/[.,;:!?]+$/, '')
+    const label = m[1] || url
+    html += `<a href="${escapeHtml(url)}" style="${aStyle}">${escapeHtml(label)}</a>`
+    if (m[3]) html += escapeHtml(m[3].slice(url.length))
+    last = m.index + m[0].length
+  }
+  return html + escapeHtml(line.slice(last))
+}
 
 // Splits on blank lines. Within a block, lines starting with "- " become a
 // simple <ul>; any leading non-bullet lines (typically ending in ":") stay a <p>.
@@ -60,11 +80,11 @@ export function paragraphsToHtml(text) {
       }
 
       let html = ''
-      const prose = proseLines.map(line => escapeHtml(line.trim())).filter(Boolean).join('<br>')
+      const prose = proseLines.map(line => linkify(line.trim())).filter(Boolean).join('<br>')
       if (prose) html += `<p style="${pStyle}">${prose}</p>`
       if (bulletLines.length) {
         html += `<ul style="${ulStyle}">` +
-          bulletLines.map(item => `<li style="${liStyle}">${escapeHtml(item)}</li>`).join('') +
+          bulletLines.map(item => `<li style="${liStyle}">${linkify(item)}</li>`).join('') +
           '</ul>'
       }
       return html
@@ -110,9 +130,9 @@ ${bodyHtml}
 
 // Builds the exact JSON body POSTed to Resend — exported so scripts can
 // preview the payload on --dry-run without duplicating the shape.
-export function buildMailPayload({ to, subject, text, html, replyTo, fromName }) {
+export function buildMailPayload({ to, subject, text, html, replyTo, fromName, fromAddress }) {
   const payload = {
-    from: `${fromName || brand.senderName} <${brand.senderAddress}>`,
+    from: `${fromName || brand.senderName} <${fromAddress || brand.senderAddress}>`,
     to: Array.isArray(to) ? to : [to],
     subject,
     text,
@@ -122,7 +142,7 @@ export function buildMailPayload({ to, subject, text, html, replyTo, fromName })
   return payload
 }
 
-export async function sendMail({ to, subject, text, html, replyTo, idempotencyKey, fromName }) {
+export async function sendMail({ to, subject, text, html, replyTo, idempotencyKey, fromName, fromAddress }) {
   const key = process.env.RESEND_API_KEY?.trim()
   if (!key) return { ok: false, error: 'RESEND_API_KEY is not configured' }
 
@@ -136,7 +156,7 @@ export async function sendMail({ to, subject, text, html, replyTo, idempotencyKe
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers,
-      body: JSON.stringify(buildMailPayload({ to, subject, text, html, replyTo, fromName })),
+      body: JSON.stringify(buildMailPayload({ to, subject, text, html, replyTo, fromName, fromAddress })),
       signal: AbortSignal.timeout(15000),
     })
     const result = await response.json().catch(() => ({}))
