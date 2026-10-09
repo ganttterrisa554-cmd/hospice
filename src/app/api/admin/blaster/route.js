@@ -16,18 +16,7 @@ import { brand } from '../../../../lib/brand.mjs'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-function authorized(request) {
-  const key = process.env.ADMIN_KEY?.trim()
-  if (!key) return process.env.NODE_ENV !== 'production'
-  return request.headers.get('x-admin-key') === key
-}
-
-function denied() {
-  return Response.json({ success: false, error: 'Unauthorized.' }, { status: 401 })
-}
-
 export async function GET(request) {
-  if (!authorized(request)) return denied()
   const [customTemplates, campaigns, sent, settings] = await Promise.all([
     listCustomTemplates(),
     listCampaigns(),
@@ -52,8 +41,6 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  if (!authorized(request)) return denied()
-
   let data
   try {
     data = await request.json()
