@@ -179,6 +179,7 @@ function BlastTab({ state, refresh, goCampaigns }) {
   const [body, setBody] = useState('')
   const [preview, setPreview] = useState(null)
   const [resend, setResend] = useState(false)
+  const [plain, setPlain] = useState(true)
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState(null)
   const [err, setErr] = useState('')
@@ -218,7 +219,7 @@ function BlastTab({ state, refresh, goCampaigns }) {
     const r = await fetch('/api/admin/blaster', {
       method: 'POST',
       headers: headers(),
-      body: JSON.stringify({ action: 'preview', subject, body, name: sample.name, email: sample.email }),
+      body: JSON.stringify({ action: 'preview', subject, body, name: sample.name, email: sample.email, plain }),
     }).then(x => x.json())
     if (r.success) setPreview(r.rendered)
     else setErr(r.error || 'Preview failed')
@@ -234,7 +235,7 @@ function BlastTab({ state, refresh, goCampaigns }) {
       const r = await fetch('/api/admin/blaster', {
         method: 'POST',
         headers: headers(),
-        body: JSON.stringify({ action: 'send', name, subject, body, recipients, resend, ...sender }),
+        body: JSON.stringify({ action: 'send', name, subject, body, recipients, resend, plain, ...sender }),
       }).then(x => x.json())
       if (r.success) {
         setResult(r)
@@ -418,10 +419,16 @@ function BlastTab({ state, refresh, goCampaigns }) {
           </p>
 
           <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 text-xs text-slate-500">
-              <input type="checkbox" checked={resend} onChange={e => setResend(e.target.checked)} className="rounded" />
-              Resend to previously emailed
-            </label>
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2 text-xs text-slate-500">
+                <input type="checkbox" checked={plain} onChange={e => { setPlain(e.target.checked); setPreview(null) }} className="rounded" />
+                Plain text (no branding)
+              </label>
+              <label className="flex items-center gap-2 text-xs text-slate-500">
+                <input type="checkbox" checked={resend} onChange={e => setResend(e.target.checked)} className="rounded" />
+                Resend to previously emailed
+              </label>
+            </div>
             <div className="flex gap-2">
               <button
                 onClick={doPreview}
@@ -471,7 +478,13 @@ function BlastTab({ state, refresh, goCampaigns }) {
               Preview for {preview ? `${recipients[0]?.name || 'Alex Johnson'} <${recipients[0]?.email || 'alex@example.com'}>` : ''}
             </h3>
             <p className="text-sm font-medium text-slate-800 mb-2">Subject: {preview.subject}</p>
-            <iframe title="preview" srcDoc={preview.html} className="w-full h-96 rounded-lg border border-slate-200 bg-white" />
+            {preview.html ? (
+              <iframe title="preview" srcDoc={preview.html} className="w-full h-96 rounded-lg border border-slate-200 bg-white" />
+            ) : (
+              <pre className="w-full h-96 overflow-y-auto rounded-lg border border-slate-200 bg-white p-4 text-sm font-mono whitespace-pre-wrap text-slate-800">
+                {preview.text}
+              </pre>
+            )}
           </div>
         )}
       </section>

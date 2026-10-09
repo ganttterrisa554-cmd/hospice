@@ -59,6 +59,7 @@ export async function POST(request) {
           subject: data.subject,
           body: data.body,
           recipient,
+          plain: data.plain === true,
         })
         return Response.json({ success: true, rendered, recipient })
       }
@@ -76,6 +77,7 @@ export async function POST(request) {
           body: String(data.body || '').slice(0, 20000),
           recipients,
           resend: data.resend === true,
+          plain: data.plain === true,
           sender: {
             fromName: String(data.fromName || '').slice(0, 120),
             fromAddress: String(data.fromAddress || '').slice(0, 200),

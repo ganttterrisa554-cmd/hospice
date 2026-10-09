@@ -95,11 +95,15 @@ export function htmlToText(html) {
     .trim()
 }
 
-export function renderCustomEmail({ subject, body, recipient }) {
+export function renderCustomEmail({ subject, body, recipient, plain = false }) {
   const isHtml = /<[a-zA-Z][^>]*>/.test(String(body))
   const finalSubject = substitute(subject, recipient)
   const substituted = substitute(body, recipient, { escape: isHtml })
   const text = isHtml ? htmlToText(substituted) : substituted
+  if (plain) {
+    // Text-only — cold outreach stays out of Promotions without the HTML shell.
+    return { subject: finalSubject, text, html: undefined }
+  }
   const bodyHtml = isHtml ? sanitizeEmailHtml(substituted) : paragraphsToHtml(text)
   return {
     subject: finalSubject,
@@ -183,7 +187,7 @@ export async function sentEmails() {
   return Object.keys(log)
 }
 
-export async function runCampaign({ name, subject, body, recipients, resend = false, sender = {} }) {
+export async function runCampaign({ name, subject, body, recipients, resend = false, sender = {}, plain = false }) {
   if (!Array.isArray(recipients) || recipients.length === 0) {
     throw new Error('Campaign needs at least one recipient.')
   }
@@ -208,6 +212,7 @@ export async function runCampaign({ name, subject, body, recipients, resend = fa
     subject,
     body,
     sender: effectiveSender,
+    plain,
     createdAt: new Date().toISOString(),
     recipientCount: recipients.length,
     status: 'running',
@@ -235,7 +240,7 @@ export async function runCampaign({ name, subject, body, recipients, resend = fa
       continue
     }
 
-    const rendered = renderCustomEmail({ subject, body, recipient: { ...recipient, email } })
+    const rendered = renderCustomEmail({ subject, body, recipient: { ...recipient, email }, plain })
     const key = `campaign-${campaign.id}-${createHash('sha256').update(email).digest('hex').slice(0, 16)}`
     const result = await sendMail({
       to: email,
