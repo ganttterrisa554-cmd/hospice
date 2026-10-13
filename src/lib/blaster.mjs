@@ -1,30 +1,15 @@
 import { createHash } from 'node:crypto'
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
-import path from 'node:path'
 import { emailShell, escapeHtml, paragraphsToHtml, sendMail } from './mail.mjs'
+import { createJsonStore } from './store.mjs'
 
-const dataDir = path.join(process.cwd(), 'data', 'blaster')
-const templatesPath = path.join(dataDir, 'templates.json')
-const campaignsPath = path.join(dataDir, 'campaigns.json')
-const sentLogPath = path.join(dataDir, 'sent-log.json')
-const settingsPath = path.join(dataDir, 'settings.json')
+const store = createJsonStore({ dir: 'data/blaster', namespace: 'blaster' })
 
 const SEND_DELAY_MS = 150
 const MAX_RECIPIENTS = 500
 const MERGE_TAGS = /\{(firstName|name|email)\}/g
 
-async function loadJson(file, fallback) {
-  try {
-    return JSON.parse(await readFile(file, 'utf8'))
-  } catch {
-    return fallback
-  }
-}
-
-async function saveJson(file, data) {
-  await mkdir(dataDir, { recursive: true })
-  await writeFile(file, JSON.stringify(data, null, 2))
-}
+const loadJson = (name, fallback) => store.load(name, fallback)
+const saveJson = (name, data) => store.save(name, data)
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -116,7 +101,7 @@ export function renderCustomEmail({ subject, body, recipient, plain = false }) {
 }
 
 export async function listCustomTemplates() {
-  return loadJson(templatesPath, [])
+  return loadJson('templates', [])
 }
 
 export async function saveCustomTemplate({ id, name, subject, body }) {
@@ -126,7 +111,7 @@ export async function saveCustomTemplate({ id, name, subject, body }) {
     const i = templates.findIndex(t => t.id === id)
     if (i === -1) throw new Error(`Template not found: ${id}`)
     templates[i] = { ...templates[i], name, subject, body, updatedAt: now }
-    await saveJson(templatesPath, templates)
+    await saveJson('templates', templates)
     return templates[i]
   }
   const template = {
@@ -138,7 +123,7 @@ export async function saveCustomTemplate({ id, name, subject, body }) {
     updatedAt: now,
   }
   templates.push(template)
-  await saveJson(templatesPath, templates)
+  await saveJson('templates', templates)
   return template
 }
 
@@ -146,23 +131,23 @@ export async function deleteCustomTemplate(id) {
   const templates = await listCustomTemplates()
   const next = templates.filter(t => t.id !== id)
   if (next.length === templates.length) throw new Error(`Template not found: ${id}`)
-  await saveJson(templatesPath, next)
+  await saveJson('templates', next)
 }
 
 export async function listCampaigns() {
-  const campaigns = await loadJson(campaignsPath, [])
+  const campaigns = await loadJson('campaigns', [])
   return campaigns.map(({ results, ...rest }) => rest).reverse()
 }
 
 export async function getCampaign(id) {
-  const campaigns = await loadJson(campaignsPath, [])
+  const campaigns = await loadJson('campaigns', [])
   return campaigns.find(c => c.id === id) || null
 }
 
 // Sender identity defaults — editable from /admin, applied to every campaign
 // unless overridden. Empty fields fall back to brand.mjs at send time.
 export async function getSettings() {
-  return loadJson(settingsPath, { fromName: '', fromAddress: '', replyTo: '' })
+  return loadJson('settings', { fromName: '', fromAddress: '', replyTo: '' })
 }
 
 export async function saveSettings({ fromName, fromAddress, replyTo }) {
@@ -178,12 +163,12 @@ export async function saveSettings({ fromName, fromAddress, replyTo }) {
     replyTo: String(replyTo || '').trim(),
     updatedAt: new Date().toISOString(),
   }
-  await saveJson(settingsPath, settings)
+  await saveJson('settings', settings)
   return settings
 }
 
 export async function sentEmails() {
-  const log = await loadJson(sentLogPath, {})
+  const log = await loadJson('sent-log', {})
   return Object.keys(log)
 }
 
@@ -198,8 +183,8 @@ export async function runCampaign({ name, subject, body, recipients, resend = fa
     throw new Error('Subject and message body are required.')
   }
 
-  const sentLog = await loadJson(sentLogPath, {})
-  const campaigns = await loadJson(campaignsPath, [])
+  const sentLog = await loadJson('sent-log', {})
+  const campaigns = await loadJson('campaigns', [])
   const settings = await getSettings()
   const effectiveSender = {
     fromName: sender.fromName || settings.fromName,
@@ -222,7 +207,7 @@ export async function runCampaign({ name, subject, body, recipients, resend = fa
     results: [],
   }
   campaigns.push(campaign)
-  await saveJson(campaignsPath, campaigns)
+  await saveJson('campaigns', campaigns)
 
   const seen = new Set()
   for (const recipient of recipients) {
@@ -265,8 +250,8 @@ export async function runCampaign({ name, subject, body, recipients, resend = fa
 
   campaign.status = campaign.failed === 0 ? 'completed' : 'partial'
   campaign.finishedAt = new Date().toISOString()
-  await saveJson(campaignsPath, campaigns)
-  await saveJson(sentLogPath, sentLog)
+  await saveJson('campaigns', campaigns)
+  await saveJson('sent-log', sentLog)
   return campaign
 }
 
